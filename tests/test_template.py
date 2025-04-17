@@ -255,6 +255,7 @@ class SphinxTestCase(TestCase):
     def test_class(self):
         params = {
             'name': 'foo',
+            'attributes': {'class': [], 'instance': []},
             'defs': [
                 {
                     'params': [],

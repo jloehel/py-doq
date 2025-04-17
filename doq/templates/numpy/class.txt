@@ -1,3 +1,14 @@
 """{{ name }}.
+{%- if attributes["class"]|length > 0 or attributes["class"]|length > 0 %}
+
+Attributes
+----------
+{% for category, attrs in attributes.items() -%}
+{% for attr in attrs -%}
+{{ attr.name }} :{% if attr.annotation %} {{ attr.annotation }}{% endif %}
+    Description of attribute `{{ attr.name }}`
+{% endfor -%}
+{% endfor -%}
+{% endif %}
 """
 

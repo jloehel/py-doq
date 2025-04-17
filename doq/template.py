@@ -1,7 +1,4 @@
-from jinja2 import (
-    Environment,
-    FileSystemLoader,
-)
+from jinja2 import Environment, FileSystemLoader
 
 
 class Template:
@@ -13,6 +10,6 @@ class Template:
         )
 
     def load(self, params, filename=None):
-        filename = filename or 'def.txt'
+        filename = filename or "def.txt"
         template = self.env.get_template(filename)
         return template.render(**params)

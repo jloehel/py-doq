@@ -10,6 +10,9 @@ from doq.parser import (
 
 
 class ParseTestCase(TestCase):
+
+    maxDiff = None
+
     def test_without_argument(self):
         line = """def foo(): pass"""
 
@@ -588,6 +591,7 @@ class ParseTestCase(TestCase):
         self.assertDictEqual(
             {
                 'name': 'Foo',
+                'attributes': {'class': [], 'instance': []},
                 'defs': [
                     {
                         'name': 'bar',
@@ -643,6 +647,7 @@ class ParseTestCase(TestCase):
     def test_with_classes(self):
         line = '\n'.join([
             'class Foo:',
+            '   class_attribute: int = 1',
             '   def bar(self, arg1) -> List[str]:',
             '       pass',
             '   def foo(self, arg1, arg2):',
@@ -650,6 +655,8 @@ class ParseTestCase(TestCase):
             '',
             '',
             'class Bar:',
+            '   def __init__(self):',
+            '      self.instance_attribute: int = 1',
             '   def foo(self, arg1, arg2):',
             '       pass',
             '   def bar(self, arg1) -> List[str]:',
@@ -660,6 +667,15 @@ class ParseTestCase(TestCase):
         self.assertDictEqual(
             {
                 'name': 'Foo',
+                'attributes': {
+                    'class': [
+                        {
+                            'name': 'class_attribute',
+                            'annotation': 'int'
+                        }
+                    ],
+                    'instance': []
+                },
                 'defs': [
                     {
                         'name': 'bar',
@@ -671,9 +687,9 @@ class ParseTestCase(TestCase):
                             },
                         ],
                         'return_type': 'List[str]',
-                        'start_lineno': 2,
+                        'start_lineno': 3,
                         'start_col': 3,
-                        'end_lineno': 4,
+                        'end_lineno': 5,
                         'end_col': 0,
                         'is_doc_exists': False,
                         'exceptions': [],
@@ -694,9 +710,9 @@ class ParseTestCase(TestCase):
                             },
                         ],
                         'return_type': None,
-                        'start_lineno': 4,
+                        'start_lineno': 5,
                         'start_col': 3,
-                        'end_lineno': 6,
+                        'end_lineno': 7,
                         'end_col': 0,
                         'is_doc_exists': False,
                         'exceptions': [],
@@ -707,7 +723,7 @@ class ParseTestCase(TestCase):
                 ],
                 'start_lineno': 1,
                 'start_col': 0,
-                'end_lineno': 6,
+                'end_lineno': 7,
                 'end_col': 0,
                 'is_doc_exists': False,
             },
@@ -717,7 +733,28 @@ class ParseTestCase(TestCase):
         self.assertDictEqual(
             {
                 'name': 'Bar',
+                'attributes': {
+                    'class': [],
+                    'instance': [
+                        {
+                            'name': 'instance_attribute',
+                            'annotation': 'int'
+                        }
+                    ]
+                },
                 'defs': [
+                    {
+                        'end_col': 0,
+                        'end_lineno': 12,
+                        'exceptions': [],
+                        'is_doc_exists': False,
+                        'name': '__init__',
+                        'params': [],
+                        'return_type': None,
+                        'start_col': 3,
+                        'start_lineno': 10,
+                        'yields': [],
+                    },
                     {
                         'name': 'foo',
                         'params': [
@@ -733,9 +770,9 @@ class ParseTestCase(TestCase):
                             },
                         ],
                         'return_type': None,
-                        'start_lineno': 9,
+                        'start_lineno': 12,
                         'start_col': 3,
-                        'end_lineno': 11,
+                        'end_lineno': 14,
                         'end_col': 0,
                         'is_doc_exists': False,
                         'exceptions': [],
@@ -751,18 +788,18 @@ class ParseTestCase(TestCase):
                             },
                         ],
                         'return_type': 'List[str]',
-                        'start_lineno': 11,
+                        'start_lineno': 14,
                         'start_col': 3,
-                        'end_lineno': 12,
+                        'end_lineno': 15,
                         'end_col': 11,
                         'is_doc_exists': False,
                         'exceptions': [],
                         'yields': [],
                     },
                 ],
-                'start_lineno': 8,
+                'start_lineno': 9,
                 'start_col': 0,
-                'end_lineno': 12,
+                'end_lineno': 15,
                 'end_col': 11,
                 'is_doc_exists': False,
             },
@@ -836,6 +873,7 @@ class ParseTestCase(TestCase):
         self.assertDictEqual(
             {
                 'name': 'Foo',
+                'attributes': {'class': [], 'instance': []},
                 'defs': [
                     {
                         'name': 'foo',

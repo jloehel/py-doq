@@ -1,11 +1,13 @@
 """{{ name }}.
+{%- if params|length > 0 %}
 
 Parameters
 ----------
 {% for p in params -%}
 {{ p.argument }} :{% if p.annotation %} {{ p.annotation }}{% endif %}
     {{ p.argument }}
-{% endfor %}
+{% endfor -%}
+{% endif -%}
 {%- if return_type %}
 Returns
 -------
