@@ -139,15 +139,15 @@ def parse_defs(module, omissions=None, ignore_exception=False, ignore_yield=Fals
 def parse_classdefs(module, ignore_exception=False, ignore_yield=False, ignore_init=False):
     results = []
 
-    for c in module.iter_classdefs():
-        is_doc_exists = True if c.get_doc_node() else False
+    for _class in module.iter_classdefs():
+        is_doc_exists = True if _class.get_doc_node() else False
 
-        (start_lineno, start_col) = c.start_pos
-        (end_lineno, end_col) = c.end_pos
+        (start_lineno, start_col) = _class.start_pos
+        (end_lineno, end_col) = _class.end_pos
 
-        name = c.name.value
+        name = _class.name.value
         defs = parse_defs(
-            c,
+            _class,
             omissions=['self'],
             ignore_exception=ignore_exception,
             ignore_yield=ignore_yield,
@@ -165,7 +165,7 @@ def parse_classdefs(module, ignore_exception=False, ignore_yield=False, ignore_i
             },
         )
 
-        nested = parse_classdefs(c, ignore_exception=ignore_exception, ignore_yield=ignore_yield)
+        nested = parse_classdefs(_class, ignore_exception=ignore_exception, ignore_yield=ignore_yield)
         if len(nested):
             results += nested
 
