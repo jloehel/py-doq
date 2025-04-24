@@ -1,5 +1,5 @@
 """{{ name }}.
-{%- if attributes["class"]|length > 0 or attributes["class"]|length > 0 %}
+{%- if attributes["class"]|length > 0 or attributes["instance"]|length > 0 %}
 
 Attributes
 ----------
